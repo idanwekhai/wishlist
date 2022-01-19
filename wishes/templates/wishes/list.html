@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+{% load humanize %}
+{% load bootstrap4 %}
+{% block body %}
+    
+
+ <div class="pb-5">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-12 p-5 bg-white rounded shadow-sm mb-5">
+
+          <!-- Shopping cart table -->
+          <div id="wish_table" class="table-responsive">
+            <table class="table">
+              <thead style="background-color: #f1f7fc;">
+                <tr>
+                  <th scope="col" class="border-0">
+                    <div class="p-2 px-3 text-uppercase">Item</div>
+                  </th>
+                  <th scope="col" class="border-0">
+                    <div class="py-2 text-uppercase">Estimate</div>
+                  </th>
+                  <th scope="col" class="border-0">
+                    <div class="py-2 text-uppercase">Link</div>
+                  </th>
+                 <!--  <th scope="col" class="border-0">
+                    <div class="py-2 text-uppercase">Remove</div>
+                  </th> -->
+                </tr>
+              </thead>
+              <tbody>
+
+        {% for wish in wishes %}
+                <tr>
+                  <th scope="row" class="border-0">
+                    <div class="p-2">
+                    
+                      <div class="d-inline-block align-middle">
+
+                        <h5 class="mb-0 text-dark d-inline-block align-left"> {{wish.name}} </h5>
+
+                      </div>
+                    </div>
+                  </th>
+                  <td class="border-0 align-middle"><strong>₦{{ wish.price|floatformat:2|intcomma }}</strong></td>
+                  <td class="border-0 align-middle"><strong>
+
+                        <a href="{{wish.link}}" class="text-dark d-inline-block align-middle">{{wish.link}}</a>
+
+                  </strong></td>
+                
+          </tr>
+
+         {% endfor %}
+             
+              </tbody>
+            </table>
+          </div>
+
+
+
+{% endblock body %}
+

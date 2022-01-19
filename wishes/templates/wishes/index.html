@@ -1,0 +1,126 @@
+{% extends 'base.html' %}
+{% load humanize %}
+{% load bootstrap4 %}
+{% block body %}
+    
+    <section class="contact-clean">
+
+
+              <form id="wish-form" action="" method="POST">
+                <h2 class="text-center">Add Item</h2>
+                {% bootstrap_form_errors wish_form %}
+                  {% csrf_token %}
+                  {% bootstrap_form wish_form %}
+               {% buttons %}
+                <button type="submit" class="btn btn-primary">Add</button>
+                {% endbuttons %}
+
+              </form>
+
+    </section>
+
+ <div class="pb-5">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-12 p-5 bg-white rounded shadow-sm mb-5">
+
+          <!-- Shopping cart table -->
+          <div id="wish_table" class="table-responsive">
+            <table class="table">
+              <thead style="background-color: #f1f7fc;">
+                <tr>
+                  <th scope="col" class="border-0">
+                    <div class="p-2 px-3 text-uppercase">Item</div>
+                  </th>
+                  <th scope="col" class="border-0">
+                    <div class="py-2 text-uppercase">Estimate</div>
+                  </th>
+                  <th scope="col" class="border-0">
+                    <div class="py-2 text-uppercase">Link</div>
+                  </th>
+                  <th scope="col" class="border-0">
+                    <div class="py-2 text-uppercase">Remove</div>
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+
+        {% for wish in wishes %}
+         {% if s_key == wish.sess_key %}
+                <tr>
+                  <th scope="row" class="border-0">
+                    <div class="p-2">
+                    
+                      <div class="d-inline-block align-middle">
+
+                        <p class="mb-0 text-dark d-inline-block align-left"> {{wish.name}} </p>
+
+                      </div>
+                    </div>
+                  </th>
+                  <td class="border-0 align-middle"><strong>₦{{ wish.price|floatformat:2|intcomma }}</strong></td>
+                  <td class="border-0 align-middle"><strong>
+
+                        <a href="{{wish.link}}" class="text-dark d-inline-block align-middle">{{wish.link}}</a>
+
+                  </strong></td>
+                <td class="border-0 align-middle">
+
+                <form id="del_form" method="POST" action="{% url 'wishes:delete' wish.id %}">
+                    {% csrf_token %}
+                
+                  <button type="submit" class="text-dark">
+                    <i class="fa fa-trash"></i>
+                  </button>
+             
+                </form>
+              </td>
+          </tr>
+
+           
+
+
+                
+            {% endif %}
+         {% endfor %}
+
+        
+
+             
+              </tbody>
+
+
+            </table>
+ <br>
+            <div class="container">
+  <div class="row">
+    <div class="col-sm">
+        <p style="font-weight: bold;">Share as PDF</p>
+
+        <a href="{{baseurl}}{% url 'wishes:pdf' s_key %}">
+        <button type="submit" class="btn btn-primary">Download</button>
+    </a>
+    </div>
+   <!--  <div class="col-sm">
+         <button type="submit" class="btn btn-primary">Add</button>
+    </div> -->
+    <div class="col">
+        <p style="font-weight: bold;">Share Your Wishlist</p>
+        <span>
+        <input style="width:300px" type="text" id="link" name="link" value="{{baseurl}}{% url 'wishes:link' s_key %}" disabled>
+         
+         <button onclick="copyFunc()" class="btn btn-primary">Copy</button>
+     </span>
+
+         <p id="copied"> </p>
+         
+    </div>
+  </div>
+</div>
+           
+          </div>
+
+
+
+{% endblock body %}
+

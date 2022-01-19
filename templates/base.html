@@ -1,0 +1,87 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>wish</title>
+    <link rel="stylesheet" href="{% static 'assets/bootstrap/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/styles.min.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+</head>
+
+ {% block body %}
+
+ {% endblock body %}
+
+     <script src="{% static 'assets/bootstrap/js/bootstrap.min.js' %}"></script>
+     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <!--  <script type="text/javascript" src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script> -->
+ <script type="text/javascript">
+
+$(document).on('submit', '#wish-form', function(e) {
+    e.preventDefault()
+
+    $.ajax({
+        type: "POST",
+        url: "{% url 'wishes:wish' %}",
+        data: {
+            name:$('#id_name').val(),
+            price:$('#id_price').val(),
+            link:$('#id_link').val(),
+            csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken').val(),
+        },
+        success: function() {
+
+            $('#id_name').val("")
+            $('#id_price').val("")
+            $('#id_link').val("")
+            $('#wish_table').load("{% url 'wishes:wish' %}" + ' #wish_table');
+
+        }
+        
+
+    })
+})
+
+$(document).on('submit', '#del_form', function(e) {
+    e.preventDefault()
+    var $form = $(this);
+
+    $.ajax({
+        type: "POST",
+        url: $form.attr('action'),
+        data: {
+            csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken').val(),
+        },
+        success: function() {
+
+            $('#wish_table').load("{% url 'wishes:wish' %}" + ' #wish_table');
+        } 
+
+    })
+})
+</script>
+
+<script>
+function copyFunc() {
+  /* Get the text field */
+  var copyText = document.getElementById("link");
+
+  /* Select the text field */
+  copyText.select();
+  copyText.setSelectionRange(0, 99999); /* For mobile devices */
+
+  /* Copy the text inside the text field */
+  navigator.clipboard.writeText(copyText.value);
+  
+  // /* Alert the copied text */
+  // alert("Copied the text: " + copyText.value);
+
+  document.getElementById("copied").innerHTML = "Url Copied!"
+}
+</script>
+
+</html>
